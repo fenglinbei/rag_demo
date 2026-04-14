@@ -99,9 +99,9 @@ def build_demo() -> gr.Blocks:
     with gr.Blocks(title=CONFIG.project_name) as demo:
         gr.Markdown(
             """
-# 本地中文 RAG Demo
+# 本地 RAG Demo
 
-上传 PDF / 文本文件，系统会依次完成：**切块 -> embedding 检索 -> reranker 重排 -> 本地中文大模型生成**。
+上传 PDF / 文本文件，系统会依次完成：**切块 -> embedding 检索 -> reranker 重排 -> 本地大模型生成**。
 
 > 提示：首次构建索引和首次提问会下载/加载模型，耗时会明显更长。
             """

@@ -1,0 +1,136 @@
+2026-04-15 00:55:35,110 | INFO | httpx | HTTP Request: GET http://localhost:7860/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-04-15 00:55:35,122 | INFO | httpx | HTTP Request: HEAD http://localhost:7860/ "HTTP/1.1 200 OK"
+2026-04-15 00:55:35,697 | INFO | httpx | HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-04-15 00:56:04,600 | INFO | __main__ | 开始建立索引，文件数=1
+2026-04-15 00:56:04,919 | INFO | rag.pipeline | 文档加载完成，共 10 个文档单元。
+2026-04-15 00:56:04,922 | INFO | rag.pipeline | 切块完成，共 175 个文本块。
+2026-04-15 00:56:04,923 | INFO | rag.embeddings | 加载 embedding 模型: ./models/bge-small-zh-v1.5
+2026-04-15 00:56:04,923 | INFO | sentence_transformers.base.model | Loading SentenceTransformer model from ./models/bge-small-zh-v1.5.
+2026-04-15 00:56:05,600 | INFO | rag.pipeline | 索引构建完成，耗时 1.00 秒。
+2026-04-15 00:56:05,600 | INFO | __main__ | 索引建立完成，文档数=10，文本块数=175，来源数=1
+2026-04-15 00:57:10,756 | INFO | __main__ | 开始建立索引，文件数=1
+2026-04-15 00:57:10,756 | INFO | rag.pipeline | 文档加载完成，共 1 个文档单元。
+2026-04-15 00:57:10,756 | INFO | rag.pipeline | 切块完成，共 3 个文本块。
+2026-04-15 00:57:10,785 | INFO | rag.pipeline | 索引构建完成，耗时 0.03 秒。
+2026-04-15 00:57:10,785 | INFO | __main__ | 索引建立完成，文档数=1，文本块数=3，来源数=1
+2026-04-15 00:58:33,070 | INFO | __main__ | 开始提问，问题长度=11，retrieve_top_k=8，rerank_top_k=3
+2026-04-15 00:58:33,070 | INFO | rag.pipeline | 开始执行问答链路 retrieve_top_k=8 rerank_top_k=3
+2026-04-15 00:58:33,070 | INFO | rag.rerank | 加载 reranker 模型: ./models/bge-reranker-base
+2026-04-15 00:58:33,070 | WARNING | sentence_transformers.util.decorators | The CrossEncoder `automodel_args` argument was renamed and is now deprecated. Please use `model_kwargs` instead.
+2026-04-15 00:58:33,071 | INFO | sentence_transformers.base.model | No modules.json found for ./models/bge-reranker-base, initializing a new CrossEncoder model.
+2026-04-15 00:58:35,530 | INFO | rag.generator | 加载生成模型 tokenizer: ./models/Qwen2.5-3B-Instruct
+2026-04-15 00:58:35,816 | INFO | rag.generator | 加载生成模型权重: ./models/Qwen2.5-3B-Instruct
+2026-04-15 00:58:39,032 | INFO | rag.pipeline | 向量召回完成，候选数=3
+2026-04-15 00:58:39,086 | INFO | rag.pipeline | 重排完成，返回数=3
+2026-04-15 00:58:39,098 | ERROR | __main__ | 提问失败: 
+Traceback (most recent call last):
+  File "/home/fenglin/project/conda/rag_demo/lib/python3.11/site-packages/transformers/tokenization_utils_base.py", line 275, in __getattr__
+    return self.data[item]
+           ~~~~~~~~~^^^^^^
+KeyError: 'shape'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/fenglin/project/rag_demo/app.py", line 64, in answer_question
+    result = PIPELINE.answer(
+             ^^^^^^^^^^^^^^^^
+  File "/home/fenglin/project/rag_demo/rag/pipeline.py", line 82, in answer
+    answer = generator.generate(prompt)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/fenglin/project/rag_demo/rag/generator.py", line 59, in generate
+    output_ids = self.model.generate(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/home/fenglin/project/conda/rag_demo/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/fenglin/project/conda/rag_demo/lib/python3.11/site-packages/transformers/generation/utils.py", line 2398, in generate
+    batch_size = inputs_tensor.shape[0]
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/home/fenglin/project/conda/rag_demo/lib/python3.11/site-packages/transformers/tokenization_utils_base.py", line 277, in __getattr__
+    raise AttributeError
+AttributeError
+2026-04-15 01:03:48,381 | INFO | httpx | HTTP Request: GET http://localhost:7860/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-04-15 01:03:48,394 | INFO | httpx | HTTP Request: HEAD http://localhost:7860/ "HTTP/1.1 200 OK"
+2026-04-15 01:03:48,968 | INFO | httpx | HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-04-15 01:04:08,279 | INFO | __main__ | 开始建立索引，文件数=1
+2026-04-15 01:04:08,279 | INFO | rag.pipeline | 文档加载完成，共 1 个文档单元。
+2026-04-15 01:04:08,279 | INFO | rag.pipeline | 切块完成，共 3 个文本块。
+2026-04-15 01:04:08,279 | INFO | rag.embeddings | 加载 embedding 模型: ./models/bge-small-zh-v1.5
+2026-04-15 01:04:08,280 | INFO | sentence_transformers.base.model | Loading SentenceTransformer model from ./models/bge-small-zh-v1.5.
+2026-04-15 01:04:08,719 | INFO | rag.pipeline | 索引构建完成，耗时 0.44 秒。
+2026-04-15 01:04:08,720 | INFO | __main__ | 索引建立完成，文档数=1，文本块数=3，来源数=1
+2026-04-15 01:04:31,071 | INFO | __main__ | 开始提问，问题长度=11，retrieve_top_k=8，rerank_top_k=3
+2026-04-15 01:04:31,071 | INFO | rag.pipeline | 开始执行问答链路 retrieve_top_k=8 rerank_top_k=3
+2026-04-15 01:04:31,071 | INFO | rag.rerank | 加载 reranker 模型: ./models/bge-reranker-base
+2026-04-15 01:04:31,071 | WARNING | sentence_transformers.util.decorators | The CrossEncoder `automodel_args` argument was renamed and is now deprecated. Please use `model_kwargs` instead.
+2026-04-15 01:04:31,072 | INFO | sentence_transformers.base.model | No modules.json found for ./models/bge-reranker-base, initializing a new CrossEncoder model.
+2026-04-15 01:04:33,540 | INFO | rag.generator | 加载生成模型 tokenizer: ./models/Qwen2.5-3B-Instruct
+2026-04-15 01:04:33,835 | INFO | rag.generator | 加载生成模型权重: ./models/Qwen2.5-3B-Instruct
+2026-04-15 01:04:37,085 | INFO | rag.pipeline | 向量召回完成，候选数=3
+2026-04-15 01:04:37,140 | INFO | rag.pipeline | 重排完成，返回数=3
+2026-04-15 01:04:37,151 | ERROR | __main__ | 提问失败: 
+Traceback (most recent call last):
+  File "/home/fenglin/project/conda/rag_demo/lib/python3.11/site-packages/transformers/tokenization_utils_base.py", line 275, in __getattr__
+    return self.data[item]
+           ~~~~~~~~~^^^^^^
+KeyError: 'shape'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/fenglin/project/rag_demo/app.py", line 64, in answer_question
+    result = PIPELINE.answer(
+             ^^^^^^^^^^^^^^^^
+  File "/home/fenglin/project/rag_demo/rag/pipeline.py", line 82, in answer
+    answer = generator.generate(prompt)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/fenglin/project/rag_demo/rag/generator.py", line 61, in generate
+    output_ids = self.model.generate(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/home/fenglin/project/conda/rag_demo/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/fenglin/project/conda/rag_demo/lib/python3.11/site-packages/transformers/generation/utils.py", line 2398, in generate
+    batch_size = inputs_tensor.shape[0]
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/home/fenglin/project/conda/rag_demo/lib/python3.11/site-packages/transformers/tokenization_utils_base.py", line 277, in __getattr__
+    raise AttributeError
+AttributeError
+2026-04-15 01:11:10,083 | INFO | httpx | HTTP Request: GET http://localhost:7860/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-04-15 01:11:10,096 | INFO | httpx | HTTP Request: HEAD http://localhost:7860/ "HTTP/1.1 200 OK"
+2026-04-15 01:11:10,664 | INFO | httpx | HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-04-15 01:11:22,689 | INFO | __main__ | 开始建立索引，文件数=1
+2026-04-15 01:11:23,009 | INFO | rag.pipeline | 文档加载完成，共 10 个文档单元。
+2026-04-15 01:11:23,013 | INFO | rag.pipeline | 切块完成，共 175 个文本块。
+2026-04-15 01:11:23,013 | INFO | rag.embeddings | 加载 embedding 模型: ./models/bge-small-zh-v1.5
+2026-04-15 01:11:23,014 | INFO | sentence_transformers.base.model | Loading SentenceTransformer model from ./models/bge-small-zh-v1.5.
+2026-04-15 01:11:23,675 | INFO | rag.pipeline | 索引构建完成，耗时 0.98 秒。
+2026-04-15 01:11:23,675 | INFO | __main__ | 索引建立完成，文档数=10，文本块数=175，来源数=1
+2026-04-15 01:11:42,058 | INFO | __main__ | 开始提问，问题长度=11，retrieve_top_k=12，rerank_top_k=5
+2026-04-15 01:11:42,058 | INFO | rag.pipeline | 开始执行问答链路 retrieve_top_k=12 rerank_top_k=5
+2026-04-15 01:11:42,058 | INFO | rag.rerank | 加载 reranker 模型: ./models/bge-reranker-base
+2026-04-15 01:11:42,059 | INFO | sentence_transformers.base.model | No modules.json found for ./models/bge-reranker-base, initializing a new CrossEncoder model.
+2026-04-15 01:11:44,522 | INFO | rag.generator | 加载生成模型 tokenizer: ./models/Qwen2.5-3B-Instruct
+2026-04-15 01:11:44,812 | INFO | rag.generator | 加载生成模型权重: ./models/Qwen2.5-3B-Instruct
+2026-04-15 01:11:48,044 | INFO | rag.pipeline | 向量召回完成，候选数=12
+2026-04-15 01:11:48,134 | INFO | rag.pipeline | 重排完成，返回数=5
+2026-04-15 01:11:59,235 | INFO | rag.pipeline | 生成完成，回答长度=266 字符。
+2026-04-15 01:11:59,235 | INFO | __main__ | 提问完成，命中文本块=5
+2026-04-15 01:13:17,820 | INFO | __main__ | 知识库索引已清空。
+2026-04-15 01:13:18,901 | INFO | __main__ | 开始建立索引，文件数=1
+2026-04-15 01:13:19,217 | INFO | rag.pipeline | 文档加载完成，共 10 个文档单元。
+2026-04-15 01:13:19,221 | INFO | rag.pipeline | 切块完成，共 175 个文本块。
+2026-04-15 01:13:19,482 | INFO | rag.pipeline | 索引构建完成，耗时 0.58 秒。
+2026-04-15 01:13:19,482 | INFO | __main__ | 索引建立完成，文档数=10，文本块数=175，来源数=1
+2026-04-15 01:13:28,748 | INFO | __main__ | 开始建立索引，文件数=2
+2026-04-15 01:13:29,065 | INFO | rag.pipeline | 文档加载完成，共 11 个文档单元。
+2026-04-15 01:13:29,069 | INFO | rag.pipeline | 切块完成，共 178 个文本块。
+2026-04-15 01:13:29,362 | INFO | rag.pipeline | 索引构建完成，耗时 0.61 秒。
+2026-04-15 01:13:29,362 | INFO | __main__ | 索引建立完成，文档数=11，文本块数=178，来源数=2
+2026-04-15 01:13:43,436 | INFO | __main__ | 开始提问，问题长度=9，retrieve_top_k=12，rerank_top_k=5
+2026-04-15 01:13:43,436 | INFO | rag.pipeline | 开始执行问答链路 retrieve_top_k=12 rerank_top_k=5
+2026-04-15 01:13:43,440 | INFO | rag.pipeline | 向量召回完成，候选数=12
+2026-04-15 01:13:43,549 | INFO | rag.pipeline | 重排完成，返回数=5
+2026-04-15 01:13:45,945 | INFO | rag.pipeline | 生成完成，回答长度=43 字符。
+2026-04-15 01:13:45,946 | INFO | __main__ | 提问完成，命中文本块=5
