@@ -7,6 +7,10 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 from config import AppConfig
+from .model_utils import ensure_model_path
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -16,6 +20,7 @@ class SentenceEmbeddingEncoder:
     def __init__(self, config: AppConfig):
         self.config = config
         LOGGER.info("加载 embedding 模型: %s", config.embedding_model_name)
+        ensure_model_path(config.embedding_model_name, "Embedding")
         self.model = SentenceTransformer(
             config.embedding_model_name,
             device=config.device,

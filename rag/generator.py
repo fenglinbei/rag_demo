@@ -8,6 +8,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from config import AppConfig
+from .model_utils import ensure_model_path
 from .prompts import SYSTEM_PROMPT
 
 
@@ -26,6 +27,7 @@ class LocalChatGenerator:
         self.device = config.device
         self.input_device = torch.device("cuda:0" if self.device == "cuda" and torch.cuda.is_available() else "cpu")
         LOGGER.info("加载生成模型 tokenizer: %s", config.generator_model_name)
+        ensure_model_path(config.generator_model_name, "生成")
         self.tokenizer = AutoTokenizer.from_pretrained(
             config.generator_model_name,
             trust_remote_code=True,

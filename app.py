@@ -47,7 +47,7 @@ def build_index(uploaded_files: list[str] | None):
         return _format_build_report(report), preview_rows
     except Exception as exc:  # noqa: BLE001
         LOGGER.exception("建立索引失败: %s", exc)
-        return f"建立索引失败：{exc}", []
+        return f"建立索引失败：{exc}\n\n请查看日志文件：{CONFIG.log_file}", []
 
 
 def answer_question(question: str, retrieve_top_k: int, rerank_top_k: int):
@@ -69,7 +69,7 @@ def answer_question(question: str, retrieve_top_k: int, rerank_top_k: int):
         LOGGER.info("提问完成，命中文本块=%s", len(result.retrieved))
     except Exception as exc:  # noqa: BLE001
         LOGGER.exception("提问失败: %s", exc)
-        return f"提问失败：{exc}", []
+        return f"提问失败：{exc}\n\n请查看日志文件：{CONFIG.log_file}", []
 
     answer_md = "### 回答\n" + result.answer
     rows = []
