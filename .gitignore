@@ -1,1 +1,10 @@
 models/
+*.log
+__pycache__/
+*.pyc
+*.pkl
+*.h5
+*.ckpt
+*.onnx
+*.zip
+*.tar.gz
