@@ -22,7 +22,7 @@ class CrossEncoderReranker:
             max_length=config.reranker_max_length,
             device=config.device,
             trust_remote_code=True,
-            automodel_args={"cache_dir": str(config.cache_dir)},
+            model_kwargs={"cache_dir": str(config.cache_dir)},
         )
 
     def rerank(
