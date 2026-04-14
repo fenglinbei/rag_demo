@@ -45,21 +45,23 @@ class LocalChatGenerator:
         ]
 
         if hasattr(self.tokenizer, "apply_chat_template"):
-            inputs = self.tokenizer.apply_chat_template(
+            model_inputs = self.tokenizer.apply_chat_template(
                 messages,
                 add_generation_prompt=True,
                 return_tensors="pt",
                 tokenize=True,
+                return_dict=True,
             )
         else:
             fallback_text = SYSTEM_PROMPT + "\n\n" + user_prompt
-            inputs = self.tokenizer(fallback_text, return_tensors="pt").input_ids
+            model_inputs = self.tokenizer(fallback_text, return_tensors="pt")
 
-        inputs = inputs.to(self.input_device)
+        model_inputs = model_inputs.to(self.input_device)
+        prompt_length = model_inputs["input_ids"].shape[-1]
 
         with torch.inference_mode():
             output_ids = self.model.generate(
-                inputs,
+                **model_inputs,
                 max_new_tokens=self.config.max_new_tokens,
                 do_sample=self.config.temperature > 0,
                 temperature=max(self.config.temperature, 1e-5),
@@ -68,7 +70,7 @@ class LocalChatGenerator:
                 eos_token_id=self.tokenizer.eos_token_id,
             )
 
-        generated = output_ids[0][inputs.shape[-1] :]
+        generated = output_ids[0][prompt_length:]
         return self.tokenizer.decode(generated, skip_special_tokens=True).strip()
 
     def _load_model(self):
@@ -90,11 +92,11 @@ class LocalChatGenerator:
                     bnb_4bit_use_double_quant=True,
                 )
                 common_kwargs["quantization_config"] = quantization_config
-                common_kwargs["torch_dtype"] = torch.float16
+                common_kwargs["dtype"] = torch.float16
             else:
-                common_kwargs["torch_dtype"] = torch.float16
+                common_kwargs["dtype"] = torch.float16
         else:
-            common_kwargs["torch_dtype"] = torch.float32
+            common_kwargs["dtype"] = torch.float32
 
         model = AutoModelForCausalLM.from_pretrained(
             self.config.generator_model_name,
