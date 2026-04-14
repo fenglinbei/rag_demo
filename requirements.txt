@@ -1,0 +1,9 @@
+torch>=2.2
+transformers>=4.46
+sentence-transformers>=3.0
+accelerate>=0.34
+gradio>=5.0
+PyMuPDF>=1.24
+numpy>=1.26
+bitsandbytes>=0.43
+modelscope==1.35.4
