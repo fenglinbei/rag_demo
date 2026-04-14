@@ -1,12 +1,17 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 import gradio as gr
 
 from config import CONFIG
 from rag import ModularRAGPipeline
+from rag.logging_utils import setup_logging
 
+
+setup_logging(CONFIG)
+LOGGER = logging.getLogger(__name__)
 
 PIPELINE = ModularRAGPipeline(CONFIG)
 SUPPORTED_FILE_TYPES = [".pdf", *CONFIG.supported_text_suffixes]
@@ -30,11 +35,19 @@ def build_index(uploaded_files: list[str] | None):
         return "请先上传 PDF 或文本文件。", []
 
     try:
+        LOGGER.info("开始建立索引，文件数=%s", len(uploaded_files))
         report = PIPELINE.build_index(uploaded_files)
+        LOGGER.info(
+            "索引建立完成，文档数=%s，文本块数=%s，来源数=%s",
+            report.document_count,
+            report.chunk_count,
+            len(report.sources),
+        )
         preview_rows = [[index + 1, name] for index, name in enumerate(report.sources)]
         return _format_build_report(report), preview_rows
     except Exception as exc:  # noqa: BLE001
-        return f"建立索引失败：{exc}", []
+        LOGGER.exception("建立索引失败: %s", exc)
+        return f"建立索引失败：{exc}\n\n请查看日志文件：{CONFIG.log_file}", []
 
 
 def answer_question(question: str, retrieve_top_k: int, rerank_top_k: int):
@@ -42,13 +55,21 @@ def answer_question(question: str, retrieve_top_k: int, rerank_top_k: int):
         return "请先上传文件并建立索引。", []
 
     try:
+        LOGGER.info(
+            "开始提问，问题长度=%s，retrieve_top_k=%s，rerank_top_k=%s",
+            len(question.strip()),
+            retrieve_top_k,
+            rerank_top_k,
+        )
         result = PIPELINE.answer(
             question=question,
             retrieve_top_k=int(retrieve_top_k),
             rerank_top_k=int(rerank_top_k),
         )
+        LOGGER.info("提问完成，命中文本块=%s", len(result.retrieved))
     except Exception as exc:  # noqa: BLE001
-        return f"提问失败：{exc}", []
+        LOGGER.exception("提问失败: %s", exc)
+        return f"提问失败：{exc}\n\n请查看日志文件：{CONFIG.log_file}", []
 
     answer_md = "### 回答\n" + result.answer
     rows = []
@@ -70,6 +91,7 @@ def answer_question(question: str, retrieve_top_k: int, rerank_top_k: int):
 
 def clear_index():
     PIPELINE.clear()
+    LOGGER.info("知识库索引已清空。")
     return "知识库已清空。", []
 
 
