@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import logging
 from typing import Final
 
 import torch
@@ -8,6 +9,9 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from config import AppConfig
 from .prompts import SYSTEM_PROMPT
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class LocalChatGenerator:
@@ -21,11 +25,13 @@ class LocalChatGenerator:
         self.config = config
         self.device = config.device
         self.input_device = torch.device("cuda:0" if self.device == "cuda" and torch.cuda.is_available() else "cpu")
+        LOGGER.info("加载生成模型 tokenizer: %s", config.generator_model_name)
         self.tokenizer = AutoTokenizer.from_pretrained(
             config.generator_model_name,
             trust_remote_code=True,
             cache_dir=str(config.cache_dir),
         )
+        LOGGER.info("加载生成模型权重: %s", config.generator_model_name)
         self.model = self._load_model()
         if self.tokenizer.pad_token_id is None:
             self.tokenizer.pad_token_id = self.tokenizer.eos_token_id

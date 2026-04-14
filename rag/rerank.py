@@ -1,14 +1,20 @@
 from __future__ import annotations
 
+import logging
+
 from sentence_transformers import CrossEncoder
 
 from config import AppConfig
 from .schemas import RetrievedChunk
 
 
+LOGGER = logging.getLogger(__name__)
+
+
 class CrossEncoderReranker:
     def __init__(self, config: AppConfig):
         self.config = config
+        LOGGER.info("加载 reranker 模型: %s", config.reranker_model_name)
         self.model = CrossEncoder(
             config.reranker_model_name,
             max_length=config.reranker_max_length,

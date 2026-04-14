@@ -148,6 +148,13 @@ python -c "import torch; print(torch.cuda.is_available())"
 python app.py
 ```
 
+默认会同时输出日志到控制台与项目根目录下的 `rag_demo.log`，便于定位错误堆栈。也可通过环境变量调整：
+
+```bash
+export RAG_LOG_LEVEL=INFO
+export RAG_LOG_FILE=./rag_demo.log
+```
+
 启动后在浏览器打开：
 
 ```text
