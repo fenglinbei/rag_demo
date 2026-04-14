@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
+from time import perf_counter
 
 from config import AppConfig
 from .chunking import TextChunker
@@ -11,6 +13,9 @@ from .prompts import build_prompt
 from .rerank import CrossEncoderReranker
 from .schemas import AnswerResult, IndexReport
 from .store import InMemoryVectorStore
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class ModularRAGPipeline:
@@ -29,10 +34,13 @@ class ModularRAGPipeline:
         self._sources: list[str] = []
 
     def build_index(self, file_paths: list[str | Path]) -> IndexReport:
+        start = perf_counter()
         documents = self.loader.load_many(file_paths)
+        LOGGER.info("文档加载完成，共 %s 个文档单元。", len(documents))
         chunks = self.chunker.split_documents(documents)
         if not chunks:
             raise ValueError("没有切分出可用文本块，请检查上传文档内容。")
+        LOGGER.info("切块完成，共 %s 个文本块。", len(chunks))
 
         embedder = self._get_embedder()
         embeddings = embedder.encode_corpus([chunk.text for chunk in chunks])
@@ -41,6 +49,8 @@ class ModularRAGPipeline:
         self._document_count = len(documents)
         self._chunk_count = len(chunks)
         self._sources = sorted({doc.source_name for doc in documents})
+        elapsed = perf_counter() - start
+        LOGGER.info("索引构建完成，耗时 %.2f 秒。", elapsed)
 
         return IndexReport(
             file_count=len(file_paths),
@@ -57,6 +67,7 @@ class ModularRAGPipeline:
 
         retrieve_top_k = retrieve_top_k or self.config.retrieve_top_k
         rerank_top_k = rerank_top_k or self.config.rerank_top_k
+        LOGGER.info("开始执行问答链路 retrieve_top_k=%s rerank_top_k=%s", retrieve_top_k, rerank_top_k)
 
         embedder = self._get_embedder()
         reranker = self._get_reranker()
@@ -64,9 +75,12 @@ class ModularRAGPipeline:
 
         query_embedding = embedder.encode_query(question)
         retrieved = self.store.search(query_embedding, top_k=retrieve_top_k)
+        LOGGER.info("向量召回完成，候选数=%s", len(retrieved))
         reranked = reranker.rerank(question, retrieved, top_k=rerank_top_k)
+        LOGGER.info("重排完成，返回数=%s", len(reranked))
         prompt = build_prompt(question, reranked)
         answer = generator.generate(prompt)
+        LOGGER.info("生成完成，回答长度=%s 字符。", len(answer))
         return AnswerResult(answer=answer, retrieved=reranked, prompt=prompt)
 
     def clear(self) -> None:

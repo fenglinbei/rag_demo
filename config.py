@@ -60,6 +60,8 @@ class AppConfig:
     query_instruction: str = os.getenv(
         "RAG_QUERY_INSTRUCTION", "为这个问题生成表示以检索相关中文资料："
     )
+    log_level: str = os.getenv("RAG_LOG_LEVEL", "INFO")
+    log_file: Path = Path(os.getenv("RAG_LOG_FILE", str(BASE_DIR / "rag_demo.log")))
     encoding_candidates: tuple[str, ...] = field(
         default_factory=lambda: ("utf-8", "utf-8-sig", "gb18030", "gbk", "latin-1")
     )
