@@ -13,6 +13,9 @@ from .model_utils import ensure_model_path
 LOGGER = logging.getLogger(__name__)
 
 
+LOGGER = logging.getLogger(__name__)
+
+
 class SentenceEmbeddingEncoder:
     def __init__(self, config: AppConfig):
         self.config = config
