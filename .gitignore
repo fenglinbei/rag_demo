@@ -8,3 +8,6 @@ models/
 *.onnx
 *.zip
 *.tar.gz
+
+.cache/
+.gradio/
